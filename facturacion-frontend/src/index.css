@@ -1,0 +1,46 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f4f8;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+h1 {
+  color: #008080; /* cyan oscuro */
+  margin-bottom: 0;
+}
+
+h2 {
+  color: #4caf50; /* verde */
+  margin-top: 0;
+}
+
+p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+button {
+  background-color: #4caf50;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+input[type="file"] {
+  margin-top: 1rem;
+  font-size: 16px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
