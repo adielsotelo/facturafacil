@@ -3,22 +3,31 @@ import os
 import requests
 from src.services.ocr_service import process_image
 from src.utils.logging_config import log
+from dotenv import load_dotenv
+
+load_dotenv()
 
 whatsapp_blueprint = Blueprint('whatsapp', __name__)
 
 VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN")
 ACCESS_TOKEN = os.getenv("WHATSAPP_TOKEN")
 
-@whatsapp_blueprint.route('/webhook', methods=['GET'])
+@whatsapp_blueprint.route('/', methods=['GET'])
 def verify():
+    """
+    Verifica el webhook con el token de Meta.
+    """
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.verify_token") == VERIFY_TOKEN:
         return request.args.get("hub.challenge"), 200
     return "Verification token mismatch", 403
 
-@whatsapp_blueprint.route('/webhook', methods=['POST'])
+@whatsapp_blueprint.route('/', methods=['POST'])
 def webhook():
+    """
+    Recibe mensajes entrantes desde WhatsApp Business API.
+    """
     data = request.json
-    log("Received message", data)
+    log("Mensaje recibido", data)
 
     try:
         for entry in data.get("entry", []):
@@ -43,8 +52,14 @@ def webhook():
         return "Error", 500
 
 def send_whatsapp_message(to, message):
+    """
+    Envía un mensaje de texto por WhatsApp.
+    """
     url = f"https://graph.facebook.com/v13.0/{os.getenv('WHATSAPP_PHONE_NUMBER_ID')}/messages"
-    headers = {"Authorization": f"Bearer {ACCESS_TOKEN}", "Content-Type": "application/json"}
+    headers = {
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Content-Type": "application/json"
+    }
     body = {
         "messaging_product": "whatsapp",
         "to": to,
